@@ -63,8 +63,6 @@ object Form1: TForm1
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = #1047#1072#1087#1088#1086#1089#1099
-      ExplicitLeft = 8
-      ExplicitTop = 28
       object Label1: TLabel
         Left = 679
         Top = 11
@@ -145,6 +143,10 @@ object Form1: TForm1
     object TabSheet4: TTabSheet
       Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object RadioGroup1: TRadioGroup
         Left = 3
         Top = 3

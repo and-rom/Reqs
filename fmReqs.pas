@@ -71,18 +71,25 @@ var
   UP_Hotkey = $21;
   DWN_HotKey=$22;
 
-  CN : TCols =(Name:'Общее имя'; Num: 0);
-	T : TCols =(Name:'Должность'; Num: 1);
-	OU : TCols =(Name:'Подразделение'; Num: 2);
-	O : TCols =(Name:'Организация'; Num: 3);
-	E : TCols =(Name:'Эл. почта'; Num: 4);
-	SNILS : TCols =(Name:'СНИЛС'; Num: 5);
-	INN : TCols =(Name:'ИНН'; Num: 6);
-	TOKEN : TCols =(Name:'Носитель'; Num: 7);
-	PIN : TCols =(Name:'ПИН'; Num: 8);
-	PHRASE : TCols =(Name:'Фраза'; Num: 9);
-	SN : TCols =(Name:'Фамилия'; Num: 10);
-	G : TCols =(Name:'Имя'; Num: 11);
+	SN : TCols =(Name:'Фамилия'; Num: 0);
+	G : TCols =(Name:'Имя'; Num: 1);
+	T : TCols =(Name:'Должность'; Num: 2);
+	STREET : TCols =(Name:'Адрес'; Num: 3);
+	CN : TCols =(Name:'Общее имя'; Num: 4);
+	OU : TCols =(Name:'Подразделение'; Num: 5);
+	O : TCols =(Name:'Организация'; Num: 6);
+	L : TCols =(Name:'Город'; Num: 7);
+	S : TCols =(Name:'Область'; Num: 8);
+	E : TCols =(Name:'Эл. почта'; Num: 9);
+	INN : TCols =(Name:'ИНН'; Num: 10);
+	OGRN : TCols =(Name:'ОГРН'; Num: 11);
+	SNILS : TCols =(Name:'СНИЛС'; Num: 12);
+	TOKEN : TCols =(Name:'Носитель'; Num: 13);
+	PIN : TCols =(Name:'ПИН'; Num: 14);
+	PHRASE : TCols =(Name:'Фраза'; Num: 15);
+	CONT : TCols =(Name:'Контейнер'; Num: 16);
+
+
 
 implementation
 
@@ -135,6 +142,9 @@ begin
   if Cells[SNILS.Num,i]<>'' then
     reqstr:=reqstr+'1.2.643.100.3='+Cells[SNILS.Num,i]+',';
 
+  if Cells[OGRN.Num,i]<>'' then
+    reqstr:=reqstr+'1.2.643.100.1='+Cells[OGRN.Num,i]+',';
+
   if Cells[INN.Num,i]<>'' then
     reqstr:=reqstr+'1.2.643.3.131.1.1='+Cells[INN.Num,i]+',';
 
@@ -143,13 +153,22 @@ begin
 
   reqstr:=reqstr+'C=RU,';
 
+  if Cells[S.Num,i]<>'' then
+    reqstr:=reqstr+'S="'+Cells[S.Num,i]+'",';
+
+  if Cells[L.Num,i]<>'' then
+    reqstr:=reqstr+'L="'+Cells[L.Num,i]+'",';
+
   if Cells[O.Num,i]<>'' then
     reqstr:=reqstr+'O="'+Cells[O.Num,i]+'",';
 
   if Cells[OU.Num,i]<>'' then
     reqstr:=reqstr+'OU="'+Cells[OU.Num,i]+'",';
 
-  reqstr:=reqstr+'CN='+Cells[CN.Num,i]+',';
+  reqstr:=reqstr+'CN="'+Cells[CN.Num,i]+'",';
+
+  if Cells[STREET.Num,i]<>'' then
+    reqstr:=reqstr+'2.5.4.9="'+Cells[STREET.Num,i]+'",';
 
   if Cells[T.Num,i]<>'' then
     reqstr:=reqstr+'T='+Cells[T.Num,i]+',';
@@ -160,7 +179,7 @@ begin
   if Cells[SN.Num,i]<>'' then
     reqstr:=reqstr+'SN='+Cells[SN.Num,i]+',';
 
-  oEnroll.createFIlePKCS10(reqstr,'',chosenDirectory+'\'+Translit(Cells[SN.Num,i])+'_'+IntToStr(CurrentYear)+'.req');
+  oEnroll.createFIlePKCS10(reqstr,'',chosenDirectory+'\'+Translit(Cells[SN.Num,i])+'_'+IntToStr(CurrentYear));
   oEnroll.Reset;
     end;
 
@@ -311,42 +330,23 @@ RegisterHotKey(Form1.Handle, UP_HotKey, 0, UP_HotKey);
 RegisterHotKey(Form1.Handle, DWN_HotKey, 0, DWN_HotKey);
 with StringGrid1 do
   begin
-    i:=CN.Num;
-    StringGrid1.ColCount:=i+1;
-    Cells[i,0]:=CN.Name;
-    i:=T.Num;
-    StringGrid1.ColCount:=i+1;
-    Cells[i,0]:=T.Name;
-    i:=OU.Num;
-    StringGrid1.ColCount:=i+1;
-    Cells[i,0]:=OU.Name;
-    i:=O.Num;
-    StringGrid1.ColCount:=i+1;
-    Cells[i,0]:=O.Name;
-    i:=E.Num;
-    StringGrid1.ColCount:=i+1;
-    Cells[i,0]:=E.Name;
-    i:=SNILS.Num;
-    StringGrid1.ColCount:=i+1;
-    Cells[i,0]:=SNILS.Name;
-    i:=INN.Num;
-    StringGrid1.ColCount:=i+1;
-    Cells[i,0]:=INN.Name;
-    i:=TOKEN.Num;
-    StringGrid1.ColCount:=i+1;
-    Cells[i,0]:=TOKEN.Name;
-    i:=PIN.Num;
-    StringGrid1.ColCount:=i+1;
-    Cells[i,0]:=PIN.Name;
-    i:=PHRASE.Num;
-    StringGrid1.ColCount:=i+1;
-    Cells[i,0]:=PHRASE.Name;
-    i:=SN.Num;
-    StringGrid1.ColCount:=i+1;
-    Cells[i,0]:=SN.Name;
-    i:=G.Num;
-    StringGrid1.ColCount:=i+1;
-    Cells[i,0]:=G.Name;
+    i:=SN.Num; StringGrid1.ColCount:=i+1; Cells[i,0]:=SN.Name;
+    i:=G.Num; StringGrid1.ColCount:=i+1; Cells[i,0]:=G.Name;
+    i:=T.Num; StringGrid1.ColCount:=i+1; Cells[i,0]:=T.Name;
+    i:=STREET.Num; StringGrid1.ColCount:=i+1; Cells[i,0]:=STREET.Name;
+    i:=CN.Num; StringGrid1.ColCount:=i+1; Cells[i,0]:=CN.Name;
+    i:=O.Num; StringGrid1.ColCount:=i+1; Cells[i,0]:=O.Name;
+    i:=OU.Num; StringGrid1.ColCount:=i+1; Cells[i,0]:=OU.Name;
+    i:=L.Num; StringGrid1.ColCount:=i+1; Cells[i,0]:=L.Name;
+    i:=S.Num; StringGrid1.ColCount:=i+1; Cells[i,0]:=S.Name;
+    i:=E.Num; StringGrid1.ColCount:=i+1; Cells[i,0]:=E.Name;
+    i:=INN.Num; StringGrid1.ColCount:=i+1; Cells[i,0]:=INN.Name;
+    i:=OGRN.Num; StringGrid1.ColCount:=i+1; Cells[i,0]:=OGRN.Name;
+    i:=SNILS.Num; StringGrid1.ColCount:=i+1; Cells[i,0]:=SNILS.Name;
+    i:=TOKEN.Num; StringGrid1.ColCount:=i+1; Cells[i,0]:=TOKEN.Name;
+    i:=PIN.Num; StringGrid1.ColCount:=i+1; Cells[i,0]:=PIN.Name;
+    i:=PHRASE.Num; StringGrid1.ColCount:=i+1; Cells[i,0]:=PHRASE.Name;
+    i:=CONT.Num; StringGrid1.ColCount:=i+1; Cells[i,0]:=CONT.Name;
   end;
 end;
 
