@@ -143,10 +143,6 @@ object Form1: TForm1
     object TabSheet4: TTabSheet
       Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object RadioGroup1: TRadioGroup
         Left = 3
         Top = 3
@@ -159,6 +155,28 @@ object Form1: TForm1
           'eToken'
           #1055#1091#1089#1090#1086#1081' '#1055#1048#1053)
         TabOrder = 0
+      end
+      object GroupBox1: TGroupBox
+        Left = 3
+        Top = 90
+        Width = 185
+        Height = 105
+        Caption = #1043#1086#1088#1103#1095#1080#1077' '#1082#1083#1072#1074#1080#1096#1080
+        TabOrder = 1
+        object Label2: TLabel
+          Left = 19
+          Top = 20
+          Width = 12
+          Height = 13
+          Caption = 'F5'
+        end
+        object ComboBox1: TComboBox
+          Left = 37
+          Top = 19
+          Width = 145
+          Height = 21
+          TabOrder = 0
+        end
       end
     end
   end

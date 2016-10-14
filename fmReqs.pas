@@ -25,6 +25,9 @@ type
     btnNew: TButton;
     SaveDialog1: TSaveDialog;
     OpenDialog1: TOpenDialog;
+    ComboBox1: TComboBox;
+    GroupBox1: TGroupBox;
+    Label2: TLabel;
 
     procedure DoClipbrdPaste;
     procedure StringGrid1KeyUp(Sender: TObject; var Key: Word;
@@ -68,6 +71,7 @@ var
   Phrase_HotKey = $71;
   PIN_HotKey = $72;
   StdPIN_HotKey = $73;
+  Extra_HotKey = $74;
   UP_Hotkey = $21;
   DWN_HotKey=$22;
 
@@ -322,13 +326,7 @@ procedure TForm1.FormCreate(Sender: TObject);
 var
   i:integer;
 begin
-RegisterHotKey(Form1.Handle, Cont_HotKey, 0, Cont_HotKey);
-RegisterHotKey(Form1.Handle, Phrase_HotKey, 0, Phrase_HotKey);
-RegisterHotKey(Form1.Handle, PIN_HotKey, 0, PIN_HotKey);
-RegisterHotKey(Form1.Handle, StdPIN_HotKey, 0, StdPIN_HotKey);
-RegisterHotKey(Form1.Handle, UP_HotKey, 0, UP_HotKey);
-RegisterHotKey(Form1.Handle, DWN_HotKey, 0, DWN_HotKey);
-with StringGrid1 do
+  with StringGrid1 do
   begin
     i:=SN.Num; StringGrid1.ColCount:=i+1; Cells[i,0]:=SN.Name;
     i:=G.Num; StringGrid1.ColCount:=i+1; Cells[i,0]:=G.Name;
@@ -348,6 +346,35 @@ with StringGrid1 do
     i:=PHRASE.Num; StringGrid1.ColCount:=i+1; Cells[i,0]:=PHRASE.Name;
     i:=CONT.Num; StringGrid1.ColCount:=i+1; Cells[i,0]:=CONT.Name;
   end;
+  with ComboBox1 do
+    begin
+      AddItem(SN.Name,Items);
+      AddItem(G.Name,Items);
+      AddItem(T.Name,Items);
+      AddItem(STREET.Name,Items);
+      AddItem(CN.Name,Items);
+      AddItem(O.Name,Items);
+      AddItem(OU.Name,Items);
+      AddItem(L.Name,Items);
+      AddItem(S.Name,Items);
+      AddItem(E.Name,Items);
+      AddItem(INN.Name,Items);
+      AddItem(OGRN.Name,Items);
+      AddItem(SNILS.Name,Items);
+      AddItem(TOKEN.Name,Items);
+      AddItem(PIN.Name,Items);
+      AddItem(PHRASE.Name,Items);
+      AddItem(CONT.Name,Items);
+
+      ItemIndex:=0;
+    end;
+  RegisterHotKey(Form1.Handle, Cont_HotKey, 0, Cont_HotKey);
+  RegisterHotKey(Form1.Handle, Phrase_HotKey, 0, Phrase_HotKey);
+  RegisterHotKey(Form1.Handle, PIN_HotKey, 0, PIN_HotKey);
+  RegisterHotKey(Form1.Handle, StdPIN_HotKey, 0, StdPIN_HotKey);
+  RegisterHotKey(Form1.Handle, Extra_HotKey, 0, EXTRA_HotKey);
+  RegisterHotKey(Form1.Handle, UP_HotKey, 0, UP_HotKey);
+  RegisterHotKey(Form1.Handle, DWN_HotKey, 0, DWN_HotKey);
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
@@ -356,6 +383,7 @@ UnRegisterHotKey(Form1.Handle, Cont_HotKey);
 UnRegisterHotKey(Form1.Handle, Phrase_HotKey);
 UnRegisterHotKey(Form1.Handle, PIN_HotKey);
 UnRegisterHotKey(Form1.Handle, StdPIN_HotKey);
+UnRegisterHotKey(Form1.Handle, Extra_HotKey);
 UnRegisterHotKey(Form1.Handle, UP_HotKey);
 UnRegisterHotKey(Form1.Handle, DWN_HotKey);
 end;
@@ -538,6 +566,15 @@ end;
       Form1.fShowHint('ПИН для пользователя '+#13#10+
                        AnsiUpperCase(StringGrid1.Cells[SN.Num,j])+': '+#13#10+
                        StringGrid1.Cells[PIN.Num,j],
+                       'Носитель: '+Translit(StringGrid1.Cells[SN.Num,j])+'_'+IntToStr(CurrentYear));
+     end;
+  if Msg.HotKey=Extra_HotKey then
+    begin
+      ClipBoard.SetTextBuf(PChar(StringGrid1.Cells[ComboBox1.ItemIndex,j]));
+      ctrlv;
+      Form1.fShowHint('ПИН для пользователя '+#13#10+
+                       AnsiUpperCase(StringGrid1.Cells[SN.Num,j])+': '+#13#10+
+                       StringGrid1.Cells[ComboBox1.ItemIndex,j],
                        'Носитель: '+Translit(StringGrid1.Cells[SN.Num,j])+'_'+IntToStr(CurrentYear));
      end;
   if (Msg.HotKey=UP_HotKey) and (j>1) then
